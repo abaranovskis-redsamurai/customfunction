@@ -1,0 +1,62 @@
+{
+  "pageModelVersion": "18.2.3",
+  "description": "Application Starter Page",
+  "routerFlow": "main",
+  "variables": {},
+  "types": {},
+  "chains": {
+    "showNotificationChain": {
+      "variables": {
+        "eventPayload": {
+          "type": "object"
+        }
+      },
+      "root": "showNotificationBar",
+      "actions": {
+        "showNotificationBar": {
+          "module": "vb/action/builtin/callComponentMethodAction",
+          "parameters": {
+            "component": "{{ $page.components.byId('vbDefaultNotifier') }}",
+            "method": "show",
+            "params": [
+              "{{ $variables.eventPayload.type }}",
+              "{{ $variables.eventPayload.message }}",
+              "{{ $variables.eventPayload.displayMode === 'transient' }}"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "eventListeners": {
+    "vbNotification": {
+      "chains": [
+        {
+          "chainId": "showNotificationChain",
+          "parameters": {
+            "eventPayload": "{{ $event }}"
+          }
+        }
+      ]
+    }
+  },
+  "imports": {
+    "components": {
+      "oj-vb-message-bar": {
+        "path": "vb/components/messagebar/loader"
+      },
+      "oj-menu": {
+        "path": "ojs/ojmenu"
+      },
+      "oj-menu-button": {
+        "path": "ojs/ojbutton"
+      },
+      "oj-option": {
+        "path": "ojs/ojoption"
+      },
+      "oj-toolbar": {
+        "path": "ojs/ojtoolbar"
+      }
+    }
+  }
+}
